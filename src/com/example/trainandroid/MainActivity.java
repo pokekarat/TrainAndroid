@@ -164,7 +164,6 @@ public class MainActivity extends ActionBarActivity
 				case 1:
 
 				FileMgr.init();
-				
 				SODTask sodTask = new SODTask(ui);
 				sodTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, minBatt);
 				
