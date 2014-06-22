@@ -33,6 +33,8 @@ public class MainActivity extends ActionBarActivity
 	
     public Ui ui;
 	Context ctx;
+	WindowManager.LayoutParams lp;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -50,6 +52,8 @@ public class MainActivity extends ActionBarActivity
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		
+		
 		
 		Battery.main = MainActivity.this;
 		
@@ -98,8 +102,7 @@ public class MainActivity extends ActionBarActivity
 		}
 	}
 	
-	public void startProcess()
-	{
+	public void setRoot(){
 		
 		try 
  		{
@@ -137,7 +140,12 @@ public class MainActivity extends ActionBarActivity
  			
  			e.printStackTrace();
  		}
- 	    			
+		
+	}
+	
+	public void startProcess()
+	{
+		 	    			
 		if(!Config.processing)
 		{
 			
@@ -147,6 +155,7 @@ public class MainActivity extends ActionBarActivity
 			{
 				case 0:
 				
+				this.setRoot();
 				ExternalMeasureTask externalTask = new ExternalMeasureTask(this.extraValue, ui);
 				externalTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, minBatt);
 				
@@ -154,6 +163,8 @@ public class MainActivity extends ActionBarActivity
 				
 				case 1:
 
+				FileMgr.init();
+				
 				SODTask sodTask = new SODTask(ui);
 				sodTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, minBatt);
 				

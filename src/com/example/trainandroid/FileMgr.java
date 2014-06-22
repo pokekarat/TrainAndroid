@@ -59,6 +59,25 @@ public class FileMgr {
 	public static int txPacket = 0;
 	public static int rxPacket = 0;
 	
+	//Nexus s
+	static String cpuUtilPath = "/proc/stat";
+	static String cpuFrePath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
+	
+	static String gPath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+	static String vPath = "/sys/class/power_supply/battery/voltage_now";
+	static String tPath = "/sys/class/power_supply/battery/temp";
+	static String mPath = "/proc/meminfo";
+	static String txPath = "/sys/class/net/wlan0/statistics/tx_packets";
+	static String rxPath = "/sys/class/net/wlan0/statistics/rx_packets";
+
+	static String bPath = "/sys/class/backlight/s5p_bl/brightness";
+	
+	public static void init(){
+		
+		//S4
+		bPath = "/sys/class/backlight/panel/actual_brightness";
+	}
+	
 	public static void updateResults(){
 		
 		RandomAccessFile cpuUtilFile = null;
@@ -71,16 +90,7 @@ public class FileMgr {
     	
     	try {
 		
-    		//Nexus s
-    		String cpuUtilPath = "/proc/stat";
-			String cpuFrePath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
-			String bPath = "/sys/class/backlight/s5p_bl/brightness";
-			String gPath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
-			String vPath = "/sys/class/power_supply/battery/voltage_now";
-			String tPath = "/sys/class/power_supply/battery/temp";
-			String mPath = "/proc/meminfo";
-			String txPath = "/sys/class/net/wlan0/statistics/tx_packets";
-			String rxPath = "/sys/class/net/wlan0/statistics/rx_packets";
+    		
 			
 			cpuUtilFile = new RandomAccessFile(cpuUtilPath, "r");
 			cpuUtilFile.readLine();

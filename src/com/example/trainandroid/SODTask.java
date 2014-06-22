@@ -2,13 +2,16 @@ package com.example.trainandroid;
 
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.view.WindowManager;
 
 class SODTask extends AsyncTask<Integer, Integer, Integer>
 {
 	Ui view;
+	WindowManager.LayoutParams lp;
 	public SODTask(Ui u){
 		
 		view = u;
+		lp = view._act.getWindow().getAttributes();
 	}
 	
 	@Override
@@ -17,6 +20,8 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
 		FileMgr.status = "SOD-based working";
 	}
 	
+	
+	boolean isToggle = true;
 	@Override
 	protected Integer doInBackground(Integer... params) 
 	{
@@ -34,8 +39,20 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
  	    	
  	    	/*if(Sample.sample == 0)
  	    		ht.execute();*/
+ 	    	if(isToggle)
+ 	    	{
+ 	    		isToggle = false;
+ 	    		lp.screenBrightness = 30;
+ 	    		view._act.getWindow().setAttributes(lp);
+ 	    	}
+ 	    	else
+ 	    	{
+ 	    		isToggle = true;
+ 	    		lp.screenBrightness = 255;
+ 	    		view._act.getWindow().setAttributes(lp);
+ 	    	}
  	    	
- 	    	SystemClock.sleep(1000 * 60 * 5); //Nexus S battery update rate = 1 Hz    	    	
+ 	    	SystemClock.sleep(5000); //sleep every 5 mins   	    	
  	    	++Config.sample;
  		}
  		
@@ -95,7 +112,7 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
 		    
 		    //if(loop != -1)
 		    //{	
-		    	result = loop + " voltage="+ FileMgr.voltData + " Util=" + FileMgr.cpuUtilData + " Freq=" + FileMgr.cpuFreqData + " Battery=" + Battery.getBatteryLevel() + " Temp="+FileMgr.tempData+"\n";	
+		    	result = loop + " voltage="+ FileMgr.voltData + " Util=" + FileMgr.cpuUtilData + " Freq=" + FileMgr.cpuFreqData + " Bright="+FileMgr.brightData+" Battery=" + Battery.getBatteryLevel() + " Temp="+FileMgr.tempData+"\n";	
 		    	FileMgr.saveSDCard("SOD_"+ loop, result);
 		    //}
 		    
