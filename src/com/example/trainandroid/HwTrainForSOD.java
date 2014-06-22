@@ -16,11 +16,18 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
-class HwTrainForSOD extends AsyncTask<Long, String, Integer>
+class HwTrainForSOD extends AsyncTask<Integer, Integer, Integer>
 {
-				
+		WindowManager.LayoutParams lp;
+		Ui view;
+		
+		public HwTrainForSOD(Ui u, WindowManager.LayoutParams l){
+			view = u;
+			lp = l;
+		}
 		public void killProcess() throws InterruptedException{
 			CPU.killTrainApp();
 		}
@@ -35,11 +42,14 @@ class HwTrainForSOD extends AsyncTask<Long, String, Integer>
 			
 		}
 		
+		boolean isToggle = false;
 		@Override
-		protected Integer doInBackground(Long... arg0) 
+		protected Integer doInBackground(Integer... params) 
 		{	
 			   
-			String governor = "powersave";
+			publishProgress(Config.sample);
+			
+			/*String governor = "powersave";
 	    	String freqs[] = {"200000","400000","800000","1000000"};
 	    	int util[] = {0,100};
 	    	
@@ -82,17 +92,33 @@ class HwTrainForSOD extends AsyncTask<Long, String, Integer>
 		    	 
 		    	 SystemClock.sleep(1000);
 		    	
-		    }
+		    }*/
 				
+			SystemClock.sleep(5000);
 			
-			 
+			
 			 return 1;
 		}
 		
 		@Override
-    	protected void onProgressUpdate(String... arg1)
+    	protected void onProgressUpdate(Integer... arg1)
     	{
-			Screen.li.setBackgroundColor(Color.parseColor(arg1[0]));
+			//Screen.li.setBackgroundColor(Color.parseColor(arg1[0]));
+			
+			if(isToggle)
+ 	    	{
+ 	    		isToggle = false;
+ 	    		lp = view._act.getWindow().getAttributes();
+ 	    		lp.screenBrightness = 1f;
+ 	    		view._act.getWindow().setAttributes(lp);
+ 	    	}
+ 	    	else
+ 	    	{
+ 	    		isToggle = true;
+ 	    		lp = view._act.getWindow().getAttributes();
+ 	    		lp.screenBrightness = 255f;
+ 	    		view._act.getWindow().setAttributes(lp);
+ 	    	}
     	}
 		
 		int resultFromCpuTask = 0;   
