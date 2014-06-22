@@ -75,7 +75,7 @@ public class FileMgr {
 	public static void init(){
 		
 		//S4
-		bPath = "/sys/class/backlight/panel/actual_brightness";
+		bPath = "/sys/class/backlight/panel/brightness";
 	}
 	
 	public static void updateResults(){

@@ -8,6 +8,8 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
 {
 	Ui view;
 	WindowManager.LayoutParams lp;
+	HwTrainForSOD ht;
+	
 	public SODTask(Ui u){
 		
 		view = u;
@@ -18,10 +20,12 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
 	protected void onPreExecute()
 	{    		 			
 		FileMgr.status = "SOD-based working";
+		
+		ht = new HwTrainForSOD(view, lp);
 	}
 	
 	
-	boolean isToggle = true;
+	
 	@Override
 	protected Integer doInBackground(Integer... params) 
 	{
@@ -37,22 +41,10 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
     	{
  	    	publishProgress(Config.sample);
  	    	
- 	    	/*if(Sample.sample == 0)
- 	    		ht.execute();*/
- 	    	if(isToggle)
- 	    	{
- 	    		isToggle = false;
- 	    		lp.screenBrightness = 30;
- 	    		view._act.getWindow().setAttributes(lp);
- 	    	}
- 	    	else
- 	    	{
- 	    		isToggle = true;
- 	    		lp.screenBrightness = 255;
- 	    		view._act.getWindow().setAttributes(lp);
- 	    	}
+ 	    	if(Config.sample == 5)
+ 	    		ht.execute(Config.sample);
  	    	
- 	    	SystemClock.sleep(5000); //sleep every 5 mins   	    	
+ 	    	SystemClock.sleep(1000); //sleep every 5 mins   	    	
  	    	++Config.sample;
  		}
  		
@@ -68,6 +60,7 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
 	double tData = 0;
 	
 	String result = "";
+	boolean isToggle = true;
 	@Override
 	protected void onProgressUpdate(Integer... arg1)
 	{    		
