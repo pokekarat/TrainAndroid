@@ -19,7 +19,10 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 		hwTargetName = v.hwTarget;
 	}
 	
+	long currTime = 0;
+	long prevTime = 0;
 	int runMode = -1;
+	
 	@Override
 	protected void onPreExecute()
 	{    
@@ -39,9 +42,11 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 	    Battery.INIT_BATT_LEVEL = Battery.getBatteryLevel();
 	    Config.sample = 0;
 	    ht = new HwTrainForExternal(this.setExternal, hwTargetName);
+	    
+	    prevTime = System.currentTimeMillis();
 	}
 	
-	int startTrainComTime = 100;
+	int startTrainComTime = 20;
 	int delayMainSampleTime = 1000;
     @Override
 	protected Integer doInBackground(Integer... arg0)
@@ -80,6 +85,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     Double avgVoltOut = 0.0;
     String result = "";
     int startPoint = 0;
+   
     
 	@Override
 	protected void onProgressUpdate(Integer... arg1)
@@ -212,6 +218,8 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		view.statusTxt.setText("Training base power");
     		
+    		currTime = System.currentTimeMillis();
+    		
     		if(Config.sample >= this.startTrainComTime) 
     		{
     			if(Config.sample == this.startTrainComTime)
@@ -219,7 +227,8 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     				Screen.SetBrightness(0);
     			}
     			
-	    		result += " s=" + Config.sample + 
+    			
+	    		result += " s=" + (currTime - prevTime)  + 
 							" u=" + FileMgr.cpuUtilData +
 							" f=" + FileMgr.cpuFreqData +
 							" b=" +	FileMgr.brightData +
@@ -232,6 +241,8 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 							" cache=" + FileMgr.cacheUse + 
 							"\n";
     		}
+    		
+    		prevTime = currTime;
     		
     		if(Config.sample == this.startTrainComTime+100)
     		{

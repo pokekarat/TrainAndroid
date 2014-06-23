@@ -23,7 +23,7 @@ public class WiFi {
 	
 	public static void createTestFile(){
 		
-		for(int i=1; i<= 20000; i++){
+		for(int i=1; i<= 50000; i++){
 			outMsg += "A";
 		}
 	}
@@ -97,7 +97,7 @@ public class WiFi {
 	public static void sendFileToServer()
 	{
 		try {
-				for(int i=1; i<=20; i++)
+				for(int i=1; i<=1; i++)
 				{
 					for(int j=0; j<i; j++)
 			    	{
@@ -109,7 +109,7 @@ public class WiFi {
 			    		Util.delay(delayTime); //100 milli seconds
 			    	}
 				
-					Util.delay(10000); // 10 seconds
+					//Util.delay(10000); // 10 seconds
 				}
 				
 		} catch (IOException e) {

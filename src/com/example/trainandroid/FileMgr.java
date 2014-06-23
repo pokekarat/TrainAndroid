@@ -87,17 +87,14 @@ public class FileMgr {
     	RandomAccessFile voltFile = null;
     	RandomAccessFile tempFile = null;
     	
-    	
     	try {
-		
-    		
 			
 			cpuUtilFile = new RandomAccessFile(cpuUtilPath, "r");
 			cpuUtilFile.readLine();
 			cpuUtil = CPU.parseCPU(cpuUtilFile.readLine());
 			cpuUtilData = String.format("%.2f",cpuUtil);
 			
-			memUse = CPU.parseMemUse(mPath);
+			/*memUse = CPU.parseMemUse(mPath);
 			cacheUse = CPU.parseCacheUse(mPath);
 								
 			cpuFreqFile = new RandomAccessFile(cpuFrePath, "r");
@@ -113,7 +110,7 @@ public class FileMgr {
 			voltData = Double.parseDouble(voltFile.readLine())/1000000;
 			
 			tempFile = new RandomAccessFile(tPath, "r");
-			tempData = Double.parseDouble(tempFile.readLine())/10;
+			tempData = Double.parseDouble(tempFile.readLine())/10;*/
 			
 			txPacket = WiFi.TxPacket(txPath);
 			

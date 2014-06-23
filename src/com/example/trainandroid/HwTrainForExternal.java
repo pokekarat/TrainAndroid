@@ -210,7 +210,7 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 		
 		public void wifiTrain(){
 		
-			int numOfTest = 7;
+			int numOfTest = 1;
 			
 			WiFi.initToServer();
 			
@@ -220,10 +220,12 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 				Screen.SetBrightness(0);
 				
 				
-				Util.delay(10000);
+				
 				
 				
 				isStartTrain = true;
+				
+				Util.delay(5000);
 				
 				
 				hwName = "wifi"+i;
@@ -234,11 +236,13 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 				
 				isBreak = true;
 				
+				Util.delay(5000);
+				
 				
 				Screen.SetBrightness(255);
 				
 				
-				Util.delay(30000);
+				
 			}
 			
 			WiFi.closeToServer();
@@ -271,7 +275,7 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 				
 			}
 			
-			SystemClock.sleep(1000);
+			//SystemClock.sleep(1000);
 			 
 	    	return 1;
 		}
