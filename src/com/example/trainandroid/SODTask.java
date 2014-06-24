@@ -39,13 +39,13 @@ class SODTask extends AsyncTask<Integer, Integer, Integer>
     	//Start
  		while(Battery.getBatteryLevel() <= 100 && Battery.getBatteryLevel() >= 0)
     	{
- 	    	publishProgress(Config.sample);
+ 	    	publishProgress(Config.currentSample);
  	    	
- 	    	if(Config.sample == 5)
- 	    		ht.execute(Config.sample);
+ 	    	if(Config.currentSample == 5)
+ 	    		ht.execute(Config.currentSample);
  	    	
  	    	SystemClock.sleep(1000); //sleep every 5 mins   	    	
- 	    	++Config.sample;
+ 	    	++Config.currentSample;
  		}
  		
  		//End

@@ -100,7 +100,7 @@ public class Ui {
 	public void showData(){
 		
 	 	statusTxt.setText("Status = SOD processing..");
-    	sampleTxt.setText("# sample =  " + Config.sample);
+    	sampleTxt.setText("# sample =  " + Config.currentSample);
     	governTxt.setText("CPU governor =  "+ FileMgr.governData);
     	cpuUtilTxt.setText("CPU util =  " + FileMgr.cpuUtilData + " % ");
     	cpuFreqTxt.setText("CPU freq =  "+ FileMgr.cpuFreqData + " MHz ");
@@ -111,12 +111,14 @@ public class Ui {
     	battVoltTxt.setText("Battery volt =  "+ FileMgr.voltData);
     	battTempTxt.setText("Battery temp =  "+ FileMgr.tempData);
     	
-    	int speed = WiFi.wifiMgr.getConnectionInfo().getLinkSpeed();
-    	int strength = WifiManager.calculateSignalLevel(WiFi.wifiMgr.getConnectionInfo().getRssi(),5);
-		String units = WifiInfo.LINK_SPEED_UNITS;
+    	
+    	
     	String ssid = WiFi.wifiMgr.getConnectionInfo().getSSID();
-    	//wifiSpeedTxt.setText("Wifi speed = " + );
-    	wifiStateTxt.setText(String.format("%s \nat %s%s. \nStrength %s/5", ssid,speed,units,strength));
+    	int speed = WiFi.wifiMgr.getConnectionInfo().getLinkSpeed();
+    	String units = WifiInfo.LINK_SPEED_UNITS;
+    	int strength = WiFi.wifiMgr.getConnectionInfo().getRssi(); //WifiManager.calculateSignalLevel(WiFi.wifiMgr.getConnectionInfo().getRssi(),5);
+	
+    	wifiStateTxt.setText(String.format("%s \nat %s%s. \nStrength %s \ntx= %s rx=%s", ssid,speed,units,strength, FileMgr.txPacket, FileMgr.rxPacket));
 	    	
 	}
 	

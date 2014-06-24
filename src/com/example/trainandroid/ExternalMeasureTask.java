@@ -40,15 +40,15 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 		FileMgr.status = "External measure working";
 	    view.button.setText("Stop");
 	    Battery.INIT_BATT_LEVEL = Battery.getBatteryLevel();
-	    Config.sample = 0;
+	    Config.currentSample = 0;
 	    ht = new HwTrainForExternal(this.setExternal, hwTargetName);
 	    
 	    prevTime = System.currentTimeMillis();
 	}
 	
-	int startTrainComTime = 20;
-	int delayMainSampleTime = 1000;
-    @Override
+	
+    
+	@Override
 	protected Integer doInBackground(Integer... arg0)
 	{	
     	   	
@@ -58,19 +58,19 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		if(runMode == 1)
     		{
 	    		
-	    		if(Config.sample == startTrainComTime)
+	    		if(Config.currentSample == Config.startTrainTime)
 	    		{
 	    				
-	    			ht.execute(Config.sample);
+	    			ht.execute(Config.currentSample);
 	    		
 	    		}
     		}
     		
-    		this.publishProgress(Config.sample);
+    		this.publishProgress(Config.currentSample);
     		
-    		SystemClock.sleep(delayMainSampleTime);
+    		SystemClock.sleep(Config.sampleRate);
     		      		
-    		++Config.sample;
+    		++Config.currentSample;
     		
     		if(this.isTrainStop)
     			break;
@@ -102,7 +102,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		{
 	    		
 	    		view.cpuStatusTxt.setText("Start @sample= "+startPoint+"\n["+ht.currentStep+"/"+ht.totalStep+"]["+ht.position+"/"+ht.offset+"]\n[util = "+ ht.currentUtil + ", freq = "+ht.currentFreq+"]" );
-	    		result += Config.sample+" [" + FileMgr.cpuUtilData + "," + FileMgr.cpuFreqData + ",("+ht.currentUtil+","+ht.currentFreq+")] [" + FileMgr.brightData + "]\n";
+	    		result += Config.currentSample+" [" + FileMgr.cpuUtilData + "," + FileMgr.cpuFreqData + ",("+ht.currentUtil+","+ht.currentFreq+")] [" + FileMgr.brightData + "]\n";
 	    	
     	    	if(ht.isBreak)
     	    	{
@@ -119,14 +119,14 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		else
     		{
 	    		view.cpuStatusTxt.setText("Not sample yet \n ["+ht.currentStep+"/"+ht.totalStep+"]["+ht.position+"/"+ht.offset+"]\n[util = "+ ht.currentUtil + ", freq = "+ht.currentFreq+"]" );
-	    		startPoint = Config.sample;
+	    		startPoint = Config.currentSample;
     		}	
     	}
     	else if(ht.hwName.contains("screen"))
     	{
     		view.screenStatusTxt.setText("["+ht.currentStep+"/"+ht.totalStep+"] [" + FileMgr.cpuUtilData + "," + FileMgr.cpuFreqData + "] [" + FileMgr.brightData + ",("+ht.brightData+")] ");
     		
-    		result += Config.sample+" [" + FileMgr.cpuUtilData + "," + FileMgr.cpuFreqData + "] [" + FileMgr.brightData + ",("+ht.brightData+")] ";
+    		result += Config.currentSample+" [" + FileMgr.cpuUtilData + "," + FileMgr.cpuFreqData + "] [" + FileMgr.brightData + ",("+ht.brightData+")] ";
 	    	
     		if(ht.isStartTrain){
     			result += "*\n";
@@ -156,7 +156,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		if(ht.isStartTrain){
     			
-    			String s = "sample="+Config.sample + " step="+ht.currentStep+"/"+ht.totalStep + " cpu="+FileMgr.cpuUtilData+" freq="+ FileMgr.cpuFreqData +" bright="+FileMgr.brightData + " voltage="+FileMgr.voltData + " temp="+FileMgr.tempData + " cap="+Battery.getBatteryLevel() + "\n";
+    			String s = "sample="+Config.currentSample + " step="+ht.currentStep+"/"+ht.totalStep + " cpu="+FileMgr.cpuUtilData+" freq="+ FileMgr.cpuFreqData +" bright="+FileMgr.brightData + " voltage="+FileMgr.voltData + " temp="+FileMgr.tempData + " cap="+Battery.getBatteryLevel() + "\n";
     			result += s;
     			view.bluetoothTxt.setText(s);
     			
@@ -181,10 +181,10 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		if(ht.isStartTrain)
     		{
 	
-    			s = "sample="+Config.sample + " step="+ht.currentStep+"/"+ht.totalStep + 
+    			s = "sample="+Config.currentSample + " step="+ht.currentStep+"/"+ht.totalStep + 
     				" cpu="+FileMgr.cpuUtilData+" f="+ FileMgr.cpuFreqData +" b=" +
     				FileMgr.brightData + " v="+FileMgr.voltData + " t="+FileMgr.tempData + " c="+Battery.getBatteryLevel() + 
-    				" ls="+ WiFi.wifiMgr.getConnectionInfo().getLinkSpeed() + " np="+(FileMgr.txPacket + FileMgr.rxPacket) + 
+    				" ls="+ WiFi.wifiMgr.getConnectionInfo().getLinkSpeed() + " tx="+(FileMgr.txPacket) + " rx="+ (FileMgr.rxPacket) + 
     				" m=" + FileMgr.memUse + " cache=" + FileMgr.cacheUse + "\n";
     			
     			result += s;
@@ -220,13 +220,12 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		currTime = System.currentTimeMillis();
     		
-    		if(Config.sample >= this.startTrainComTime) 
+    		if(Config.currentSample >= Config.startTrainTime) 
     		{
-    			if(Config.sample == this.startTrainComTime)
+    			/*if(Config.sample == this.startTrainComTime)
     			{
     				Screen.SetBrightness(0);
-    			}
-    			
+    			}*/
     			
 	    		result += " s=" + (currTime - prevTime)  + 
 							" u=" + FileMgr.cpuUtilData +
@@ -236,7 +235,8 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 							" t=" + FileMgr.tempData + 
 							" c=" + Battery.getBatteryLevel() +
 							" l=" + WiFi.wifiMgr.getConnectionInfo().getLinkSpeed() + 
-							" p=" + (FileMgr.txPacket + FileMgr.rxPacket) + 
+							" tx=" + (FileMgr.txPacket) + 
+							" rx=" + (FileMgr.rxPacket) + 
 							" m=" + FileMgr.memUse +
 							" cache=" + FileMgr.cacheUse + 
 							"\n";
@@ -244,7 +244,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		prevTime = currTime;
     		
-    		if(Config.sample == this.startTrainComTime+100)
+    		if(Config.currentSample == Config.stopTrainTime)
     		{
     			FileMgr.saveSDCard("base", result);
     			Screen.SetBrightness(255);

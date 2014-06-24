@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity
 		}
 	}
 	
-	public void setRoot(){
+	public void initSet(){
 		
 		try 
  		{
@@ -155,7 +155,7 @@ public class MainActivity extends ActionBarActivity
 			{
 				case 0:
 				
-				this.setRoot();
+				this.initSet();
 				ExternalMeasureTask externalTask = new ExternalMeasureTask(this.extraValue, ui);
 				externalTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, minBatt);
 				

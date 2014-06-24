@@ -23,7 +23,7 @@ public class WiFi {
 	
 	public static void createTestFile(){
 		
-		for(int i=1; i<= 50000; i++){
+		for(int i=1; i<= 5000; i++){
 			outMsg += "A";
 		}
 	}
@@ -76,22 +76,10 @@ public class WiFi {
 		}	
 	}
 	
-	public static void closeToServer(){
 		
-		try {
-			
-			out.write("x\n");
-			
-			out.flush();
-	    	
-	    	out.close();
-	    	
-	    	s.close();
-	    	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+	public static void recFileFromServer(){
+		
+		
 	}
 	
 	public static void sendFileToServer()
@@ -117,23 +105,24 @@ public class WiFi {
 			e.printStackTrace();
 		}
 		
-    	/*
-    	Old
-    	for(int j=0; j<=2000; j+=100)
-    	{
-    		out.write(outMsg+"\n");
-    		out.flush();	
-    	
-    		try 
-    		{
-    			Thread.sleep(j);
-    		} 
-    		catch (InterruptedException e) 
-    		{
-    			e.printStackTrace();
-    		}
-    	}*/		
+	}
+	
+	public static void closeToServer(){
+		
+		try {
 			
+			//out.write("x\n");
+			
+			//out.flush();
+	    	
+	    	out.close();
+	    	
+	    	s.close();
+	    	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	private static int prevTx = -1;

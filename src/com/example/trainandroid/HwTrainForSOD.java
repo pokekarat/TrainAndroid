@@ -47,7 +47,7 @@ class HwTrainForSOD extends AsyncTask<Integer, Integer, Integer>
 		protected Integer doInBackground(Integer... params) 
 		{	
 			   
-			publishProgress(Config.sample);
+			publishProgress(Config.currentSample);
 			
 			/*String governor = "powersave";
 	    	String freqs[] = {"200000","400000","800000","1000000"};
