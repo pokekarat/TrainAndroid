@@ -1,5 +1,8 @@
 package com.example.trainandroid;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
@@ -36,6 +39,11 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 		{
 			runMode = 1;
 		}
+		
+		/*if(view.hwTarget == "gps"){
+			
+			view.gps.startGPS();
+		}*/
 		
 		FileMgr.status = "External measure working";
 	    view.button.setText("Stop");
@@ -74,6 +82,8 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		if(this.isTrainStop)
     			break;
+    		
+    		
     	}
     	
 	    return 0;
@@ -147,7 +157,44 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     	}
     	else if (ht.hwName.contains("gps"))
     	{
-    		view.gpsTxt.setText(view.gps.gpsStatus + " " +view.gps.numSat+" "+view.gps.locateStr);
+    		view.gpsTxt.setText(
+    				"Enable="	+ view.gps.isGPSon() + 
+    				"\nStatus=" + view.gps.gpsStatus + 
+    				"\nSatel="  + view.gps.numSat +
+    				"\nLocate=" + view.gps.locateStr);
+    		
+    		result += new SimpleDateFormat("HH:mm:ss").format(new Date())+" sample="+Config.currentSample + 
+    				" cpu="+FileMgr.cpuUtilData+" f="+ FileMgr.cpuFreqData +
+    				" b=" +	FileMgr.brightData +
+    				" v="+FileMgr.voltData + 
+    				" t="+FileMgr.tempData +
+    				" c="+Battery.getBatteryLevel() + 
+    				" m=" + FileMgr.memUse + " cache=" + FileMgr.cacheUse +
+    				" enable="	+ view.gps.isGPSon() + "\n";
+    			
+    		if(Config.currentSample==10){
+    			Screen.SetBrightness(0);
+    			//view.gps.startGPS();
+    		}
+    		
+    		if(Config.currentSample==11){
+    			Screen.SetBrightness(255);
+    			//view.gps.startGPS();
+    		}
+    		
+    		if(Config.currentSample==20){
+    			//Screen.SetBrightness(30);
+    			view.gps.startGPS();
+    		}
+    		
+    		if(Config.currentSample==60)
+    		{
+    			FileMgr.saveSDCard(ht.hwName, result);
+	    		result = "";
+	    		ht.isBreak = false;
+	    		this.isTrainStop = true;
+    		}
+    			
     	
     	}
     	else if (ht.hwName.contains("bluetooth"))
@@ -156,7 +203,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		if(ht.isStartTrain){
     			
-    			String s = "sample="+Config.currentSample + " step="+ht.currentStep+"/"+ht.totalStep + " cpu="+FileMgr.cpuUtilData+" freq="+ FileMgr.cpuFreqData +" bright="+FileMgr.brightData + " voltage="+FileMgr.voltData + " temp="+FileMgr.tempData + " cap="+Battery.getBatteryLevel() + "\n";
+    			String s = "\n\nsample="+Config.currentSample + " step="+ht.currentStep+"/"+ht.totalStep + " cpu="+FileMgr.cpuUtilData+" freq="+ FileMgr.cpuFreqData +" bright="+FileMgr.brightData + " voltage="+FileMgr.voltData + " temp="+FileMgr.tempData + " cap="+Battery.getBatteryLevel() + "\n";
     			result += s;
     			view.bluetoothTxt.setText(s);
     			
@@ -209,6 +256,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     			result = "";
 	    		
     		}
+    		
     		
     		if(ht.isMainBreak)
 	    		this.isTrainStop = true;

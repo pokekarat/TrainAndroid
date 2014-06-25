@@ -3,8 +3,12 @@ package com.example.trainandroid;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.location.*;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,17 +27,51 @@ public class GPS implements GpsStatus.Listener, LocationListener {
 	private int satellitesTotal;
 	private int satellitesUsed;
 	private float accuracy;
-	
 	// the last location time is needed to determine if a fix has been lost
 	private long locationTime = 0;
 	private List<Float> rollingAverageData = new LinkedList<Float>();
 	
+	MainActivity mAct;
 	
+	public boolean enabled = false;
 
-	public GPS(LocationManager lm){
-		locationManager = lm;
+	public GPS(MainActivity act){
+		
+		mAct = act;
+		locationManager = (LocationManager)act.getSystemService(Context.LOCATION_SERVICE);
+	}
+	
+	public void startGPS(){
+		
+		enabled = this.isGPSon();
+		
+		if (!enabled) {
+			  Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			  
+			  mAct.startActivity(intent);  	
+			  
+			  
+		} 
+		
+		Log.i("GPS.java","Turn on = "+enabled);
+		
+		locationManager.addGpsStatusListener(this);
+		
+		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,  0, 0.0f, this);
+		
+	}
+	
+	public void stopGPS(){
+		Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+		intent.putExtra("enabled", false);
+		mAct.sendBroadcast(intent);
+		
 	}
 
+	public boolean isGPSon(){
+		
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
 	@Override
 	public void onGpsStatusChanged(int changeType) {
 		if (locationManager != null) {

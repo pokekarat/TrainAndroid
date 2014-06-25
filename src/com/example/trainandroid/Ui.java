@@ -49,18 +49,17 @@ public class Ui {
     public CheckBox wifi_cb;
     
 	public String hwTarget = "";
-	LocationManager locMgr;
-	GPS locListener;
-	public LocationManager locateMgr;
-	public GPS gps;
 	
 	public Spinner spinner1;
     
 	MainActivity _act;
 	
+	public GPS gps;
+	
     public void init(MainActivity act){
     	
     	_act = act;
+    	
     	
     	cpuUtilTxt = (TextView)act.findViewById(R.id.cpuUtil);
 		cpuFreqTxt = (TextView)act.findViewById(R.id.freq);
@@ -157,21 +156,13 @@ public class Ui {
 		gps_cb.setOnClickListener(new OnClickListener() 
 		{
 			
-			public void onClick(View v){
-				if(((CheckBox) v).isChecked()){
+			public void onClick(View v)
+			{
+				if(((CheckBox) v).isChecked())
+				{
+					gps = new GPS(_act);
 					
-					locateMgr = (LocationManager)_act.getSystemService(Context.LOCATION_SERVICE);
-					
-					gps = new GPS(locateMgr);
-										
-					locateMgr.addGpsStatusListener(gps);
-					
-					locateMgr.requestLocationUpdates( LocationManager.GPS_PROVIDER,
-			                     0,   // 3 sec
-			                     0.0f, // 10 meters 
-			                     gps);
-						
-					Log.i("GPS.java [startGPS]","is start");
+					Log.i("GPS.java","Turn on = ");
 					hwTarget = "gps";
 					FileMgr.status = "GPS is checked.";
 				}

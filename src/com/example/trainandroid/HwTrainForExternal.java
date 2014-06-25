@@ -230,10 +230,10 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 				
 				hwName = "wifi"+i;
 				
-				
+				Screen.SetBrightness(255);
 				WiFi.sendFileToServer();
-				
-				
+				WiFi.closeToServer();
+				Screen.SetBrightness(0);
 				isBreak = true;
 				
 				Util.delay(5000);
@@ -245,7 +245,7 @@ class HwTrainForExternal extends AsyncTask<Integer, String, Integer>
 				
 			}
 			
-			WiFi.closeToServer();
+			
 			
 			isMainBreak = true;
 		}
