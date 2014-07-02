@@ -101,7 +101,7 @@ public class Ui {
 	 	statusTxt.setText("Status = SOD processing..");
     	sampleTxt.setText("# sample =  " + Config.currentSample);
     	governTxt.setText("CPU governor =  "+ FileMgr.governData);
-    	cpuUtilTxt.setText("CPU util =  " + FileMgr.cpuUtilData + " % ");
+    	cpuUtilTxt.setText("CPU util =  " + FileMgr.cpuUtilData + " % idle time="+ (FileMgr.cpuIdleTime/1000) + "["+ FileMgr.cpuIdle +"] (ms) usage="+FileMgr.cpuIdleUsage);
     	cpuFreqTxt.setText("CPU freq =  "+ FileMgr.cpuFreqData + " MHz ");
     	brightTxt.setText("Brightness level =  "+ FileMgr.brightData);
     	gpsTxt.setText("GPS Location =  0");

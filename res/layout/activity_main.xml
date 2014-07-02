@@ -178,8 +178,8 @@
         android:id="@+id/cpuUtil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="7dp"
-        android:layout_y="360dp"
+        android:layout_x="4dp"
+        android:layout_y="338dp"
         android:text="CPU util"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

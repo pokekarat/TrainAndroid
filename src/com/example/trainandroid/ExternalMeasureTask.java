@@ -2,10 +2,11 @@ package com.example.trainandroid;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+@SuppressLint("SimpleDateFormat")
 class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 {
 	
@@ -95,7 +96,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     Double avgVoltOut = 0.0;
     String result = "";
     int startPoint = 0;
-   
+    int startCount = 0;
     
 	@Override
 	protected void onProgressUpdate(Integer... arg1)
@@ -268,15 +269,17 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		
     		currTime = System.currentTimeMillis();
     		
-    		if(Config.currentSample >= Config.startTrainTime) 
+    		/*if(Config.currentSample >= Config.startTrainTime) 
     		{
-    			/*if(Config.sample == this.startTrainComTime)
+    			if(Config.currentSample == Config.startTrainTime)
     			{
-    				Screen.SetBrightness(0);
-    			}*/
-    			
-	    		result += " s=" + (currTime - prevTime)  + 
-							" u=" + FileMgr.cpuUtilData +
+    				Screen.SetBrightness(25);
+    			} */
+    		
+    		if(FileMgr.brightData == 5)
+    		{
+	    		result += " dt=" + (currTime - prevTime)  + 
+							" u=" + FileMgr.cpuUtilData + " it=" + (FileMgr.cpuIdleTime/1000) + " iu="+FileMgr.cpuIdleUsage +
 							" f=" + FileMgr.cpuFreqData +
 							" b=" +	FileMgr.brightData +
 							" v=" + FileMgr.voltData + 
@@ -288,16 +291,22 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
 							" m=" + FileMgr.memUse +
 							" cache=" + FileMgr.cacheUse + 
 							"\n";
+	    		
+	    		//++startCount;
     		}
+	    	//}
     		
     		prevTime = currTime;
     		
-    		if(Config.currentSample == Config.stopTrainTime)
+    		//if(Config.currentSample == Config.stopTrainTime)
+    		//{
+    		if(FileMgr.brightData == 255)
     		{
     			FileMgr.saveSDCard("base", result);
-    			Screen.SetBrightness(255);
-    			this.isTrainStop = true;
+    			Screen.SetBrightness(100);
+    			//this.isTrainStop = true;
     		}
+    		//}
     	}	
 	}
 	

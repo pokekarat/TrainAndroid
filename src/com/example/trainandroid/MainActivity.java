@@ -57,7 +57,7 @@ public class MainActivity extends ActionBarActivity
 		
 		Battery.main = MainActivity.this;
 		
-		/*
+		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		
@@ -65,11 +65,12 @@ public class MainActivity extends ActionBarActivity
 		{
 		        extraValue = bundle.getString("extraKey");
 		        
-		        if(extraValue.equals("lcd"))
+		        if(extraValue.equals("start"))
 		        {
-		        	screen_cb.setChecked(true);	
+		        	if(!Config.processing)
+						startProcess();
 		        }    	
-		}*/
+		}
 		    
 	}
 		
@@ -117,11 +118,11 @@ public class MainActivity extends ActionBarActivity
  				dos.writeBytes("chmod 777 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor" + "\n");
  				dos.writeBytes("chmod 777 /sys/class/backlight/s5p_bl/brightness"+"\n");
 
- 				String governor = "ondemand";
+ 				String governor = "powersave";
  				dos.writeBytes("echo '"+governor+"' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor" + "\n");
  				//dos.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" + "\n");
  				//dos.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" + "\n");
- 				dos.writeBytes("echo 255 > /sys/class/backlight/s5p_bl/brightness"+"\n");
+ 				dos.writeBytes("echo 100 > /sys/class/backlight/s5p_bl/brightness"+"\n");
  				dos.writeBytes("exit\n");
  				dos.flush();
  				dos.close();

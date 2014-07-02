@@ -47,6 +47,11 @@ public class FileMgr {
 	
 	
 	private static double cpuUtil = 0;
+	public static double cpuIdle = 0;
+	public static double cpuIdlePower = 0;
+	public static double cpuIdleTime = 0;
+	public static double cpuIdleUsage = 0;
+	public static double cpuCompute = 0;
 	public static String cpuUtilData = "";
 	public static double cpuFreqData = 0;
 	public static double brightData = 0;
@@ -62,6 +67,9 @@ public class FileMgr {
 	//Nexus s
 	static String cpuUtilPath = "/proc/stat";
 	static String cpuFrePath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
+	static String cpuIdlePowerPath = "/sys/devices/system/cpu/cpu0/cpuidle/state0/power";
+	static String cpuIdleTimePath = "/sys/devices/system/cpu/cpu0/cpuidle/state0/time";
+	static String cpuIdleUsagePath = "/sys/devices/system/cpu/cpu0/cpuidle/state0/usage";
 	
 	static String gPath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
 	static String vPath = "/sys/class/power_supply/battery/voltage_now";
@@ -82,6 +90,9 @@ public class FileMgr {
 		
 		RandomAccessFile cpuUtilFile = null;
     	RandomAccessFile cpuFreqFile = null;
+    	RandomAccessFile cpuIdlePowerFile = null;
+    	RandomAccessFile cpuIdleTimeFile = null;
+    	RandomAccessFile cpuIdleUsageFile = null;
     	RandomAccessFile brightFile = null;
     	RandomAccessFile governFile = null;
     	RandomAccessFile voltFile = null;
@@ -90,9 +101,24 @@ public class FileMgr {
     	try {
 			
 			cpuUtilFile = new RandomAccessFile(cpuUtilPath, "r");
+			//Read twice because the first line is CPU not CPU0
 			cpuUtilFile.readLine();
-			cpuUtil = CPU.parseCPU(cpuUtilFile.readLine());
+			double cpuRets[] = CPU.parseCPU(cpuUtilFile.readLine());
+			
+			cpuIdle = cpuRets[0];
+			cpuCompute = cpuRets[1];
+			cpuUtil = cpuRets[2];
+			
 			cpuUtilData = String.format("%.2f",cpuUtil);
+			
+			//cpuIdlePowerFile = new RandomAccessFile(cpuIdlePowerPath, "r");
+			//cpuIdlePower = CPU.parseCPUIdlePower(cpuIdlePowerFile.readLine());
+			
+			cpuIdleTimeFile = new RandomAccessFile(cpuIdleTimePath, "r");
+			cpuIdleTime = CPU.parseCPUIdleTime(cpuIdleTimeFile.readLine());
+			
+			cpuIdleUsageFile = new RandomAccessFile(cpuIdleUsagePath, "r");
+			cpuIdleUsage = CPU.parseCPUIdleUsage(cpuIdleUsageFile.readLine());
 			
 			memUse = CPU.parseMemUse(mPath);
 			cacheUse = CPU.parseCacheUse(mPath);
@@ -137,6 +163,15 @@ public class FileMgr {
                 
                 if (governFile != null)
                 	governFile.close();
+                
+                if(cpuIdlePowerFile != null)
+                	cpuIdlePowerFile.close();
+                
+                if(cpuIdleTimeFile != null)
+                	cpuIdleTimeFile.close();
+                
+                if(cpuIdleUsageFile != null)
+                	cpuIdleUsageFile.close();
                  
             } catch (IOException ex) {
                 ex.printStackTrace();

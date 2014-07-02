@@ -289,13 +289,54 @@ public class CPU {
 		return false;
 	}
 	
+	
+	static double cpu_prev_idle_pw = 0;
+	static double cpu_cur_idle_pw = 0;
+	
+	public static double parseCPUIdlePower(String proc)
+	{
+		
+		cpu_cur_idle_pw = Double.parseDouble(proc);
+		double diff = cpu_cur_idle_pw- cpu_prev_idle_pw;
+		cpu_prev_idle_pw = cpu_cur_idle_pw;
+		
+		return diff;
+	}
+	
+	static double cpu_prev_idle_time = 0;
+	static double cpu_cur_idle_time = 0;
+	
+	public static double parseCPUIdleTime(String proc)
+	{
+		
+		cpu_cur_idle_time = Double.parseDouble(proc);
+		double diff = cpu_cur_idle_time - cpu_prev_idle_time;
+		cpu_prev_idle_time = cpu_cur_idle_time;
+		
+		return diff;
+	}
+	
+	static double cpu_prev_idle_usage = 0;
+	static double cpu_cur_idle_usage = 0;
+	
+	public static double parseCPUIdleUsage(String proc)
+	{
+		
+		cpu_cur_idle_usage = Double.parseDouble(proc);
+		double diff = cpu_cur_idle_usage - cpu_prev_idle_usage;
+		cpu_prev_idle_usage = cpu_cur_idle_usage;
+		
+		return diff;
+	}
+	
 	static double cpu_prev_total_util = 0;
 	static double cpu_prev_idle = 0;
 	static double cpu_cur_total_util = 0;
 	static double cpu_cur_idle = 0;
 	
-	public static double parseCPU(String proc)
+	public static double[] parseCPU(String proc)
 	{
+		double[] rets = new double[3];
 		
 		String[] cpu_cur_arr = proc.split(" ");
 		
@@ -307,15 +348,17 @@ public class CPU {
 		cpu_cur_idle = Double.parseDouble(cpu_cur_arr[4]);
 		
 		double diff_idle = cpu_cur_idle - cpu_prev_idle;
+		rets[0] = diff_idle;
 		double diff_total = cpu_cur_total_util - cpu_prev_total_util;
+		rets[1] = diff_total - diff_idle;
 		double diff_util = (1000 * (diff_total - diff_idle) / diff_total) / 10;
-		
+		rets[2] = diff_util;
 		cpu_prev_idle = cpu_cur_idle;
         cpu_prev_total_util = cpu_cur_total_util;
         cpu_cur_total_util = 0;
         cpu_cur_idle = 0;
          
-		return diff_util; // String.valueOf(String.format("%.2f", diff_util));
+		return rets; // String.valueOf(String.format("%.2f", diff_util));
 				
 	}	
 	
