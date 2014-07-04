@@ -276,7 +276,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     				Screen.SetBrightness(25);
     			} */
     		
-    		if(FileMgr.brightData == 5)
+    		if(FileMgr.brightData == 0)
     		{
 	    		result += " dt=" + (currTime - prevTime)  + 
 							" u=" + FileMgr.cpuUtilData + " it=" + (FileMgr.cpuIdleTime/1000) + " iu="+FileMgr.cpuIdleUsage +
@@ -305,6 +305,7 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     			FileMgr.saveSDCard("base", result);
     			Screen.SetBrightness(100);
     			//this.isTrainStop = true;
+    			result = "";
     		}
     		//}
     	}	
