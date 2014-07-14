@@ -279,16 +279,16 @@ class ExternalMeasureTask extends AsyncTask<Integer, Integer , Integer>
     		if(FileMgr.brightData == 0)
     		{
 	    		result += " dt=" + (currTime - prevTime)  + 
-							" u=" + FileMgr.cpuUtilData + " it=" + (FileMgr.cpuIdleTime/1000) + " iu="+FileMgr.cpuIdleUsage +
-							" f=" + FileMgr.cpuFreqData +
-							" b=" +	FileMgr.brightData +
-							" v=" + FileMgr.voltData + 
-							" t=" + FileMgr.tempData + 
-							" c=" + Battery.getBatteryLevel() +
-							" l=" + WiFi.wifiMgr.getConnectionInfo().getLinkSpeed() + 
+							" util=" + FileMgr.cpuUtilData + " it=" + (FileMgr.cpuIdleTime/1000) + " iu="+FileMgr.cpuIdleUsage +
+							" freq=" + FileMgr.cpuFreqData +
+							" bright=" +	FileMgr.brightData +
+							" volt=" + FileMgr.voltData + 
+							" temp=" + FileMgr.tempData + 
+							" capacity=" + Battery.getBatteryLevel() +
+							" link_speed=" + WiFi.wifiMgr.getConnectionInfo().getLinkSpeed() + 
 							" tx=" + (FileMgr.txPacket) + 
 							" rx=" + (FileMgr.rxPacket) + 
-							" m=" + FileMgr.memUse +
+							" mmem=" + FileMgr.memUse +
 							" cache=" + FileMgr.cacheUse + 
 							"\n";
 	    		
