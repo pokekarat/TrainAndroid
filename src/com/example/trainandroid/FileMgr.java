@@ -64,6 +64,7 @@ public class FileMgr {
 	public static int txPacket = 0;
 	public static int rxPacket = 0;
 	
+	
 	//Nexus s
 	static String cpuUtilPath = "/proc/stat";
 	static String cpuFrePath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
@@ -79,6 +80,8 @@ public class FileMgr {
 	static String rxPath = "/sys/class/net/wlan0/statistics/rx_packets";
 
 	static String bPath = "/sys/class/backlight/s5p_bl/brightness";
+	
+	
 	
 	public static void init(){
 		
@@ -97,6 +100,7 @@ public class FileMgr {
     	RandomAccessFile governFile = null;
     	RandomAccessFile voltFile = null;
     	RandomAccessFile tempFile = null;
+    
     	
     	try {
 			
@@ -141,6 +145,10 @@ public class FileMgr {
 			txPacket = WiFi.TxPacket(txPath);
 			
 			rxPacket = WiFi.RxPacket(rxPath);
+			
+			
+			
+			
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
